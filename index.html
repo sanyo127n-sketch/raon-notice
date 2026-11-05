@@ -26,7 +26,10 @@ var man=null,version=null,pending=null,idx=-1,slideAt=0,front='a',bootAt=Date.no
 function now(){return Date.now()+clockShift}
 // 터치·마우스·키 입력을 전부 차단
 var ev=['touchstart','touchmove','touchend','touchcancel','pointerdown','pointermove','pointerup','pointercancel','mousedown','mousemove','mouseup','click','dblclick','contextmenu','wheel','gesturestart','gesturechange','gestureend','dragstart','selectstart','keydown','keyup','keypress'];
-function stop(e){if(e.cancelable)e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return false}
+function fsOn(){var d=document,r=d.documentElement;if(d.fullscreenElement||d.webkitFullscreenElement)return;
+ var f=r.requestFullscreen||r.webkitRequestFullscreen||r.webkitRequestFullScreen;
+ if(f){try{var q=f.call(r);if(q&&q.catch)q.catch(function(){})}catch(x){}}}
+function stop(e){if(e.type==='touchend'||e.type==='mouseup'||e.type==='pointerup'||e.type==='click')fsOn();if(e.cancelable)e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return false}
 for(var i=0;i<ev.length;i++){window.addEventListener(ev[i],stop,{capture:true,passive:false})}
 function kstMs(s,endOfDay){ // "YYYY-MM-DD" 또는 "YYYY-MM-DDTHH:MM"을 한국시간으로 해석
  if(!s)return endOfDay?Infinity:-Infinity;
